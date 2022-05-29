@@ -3,13 +3,45 @@ create database masicsql;
 C:\PostgreSQL\14\bin\psql.exe -U postgres -d masicsql
 postgre1984
 
+
+
+
 /* ２．*/
 
 
 
 
 
+/*コラム ６．相関サブクエリ（WHERE）について理解を深めた＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝*/
 
+create table teams(
+  member varchar(20) not null,
+  team_id integer not null,
+  status varchar(20) not null
+);
+
+insert into teams values('ジョー', 1, '待機');
+insert into teams values('ケン', 1, '出動中');
+insert into teams values('ミック', 1, '待機');
+insert into teams values('カレン', 2, '出動中');
+insert into teams values('キース', 2, '休暇');
+insert into teams values('ジャン', 3, '待機');
+insert into teams values('ハート', 3, '待機');
+insert into teams values('ディック', 3, '待機');
+insert into teams values('ベス', 4, '待機');
+insert into teams values('アレン', 5, '出動中');
+insert into teams values('ロバート', 5, '休暇');
+insert into teams values('ケーガン', 5, '待機');
+
+
+select team_id, member
+  from teams as T1
+  where not exists(
+    select * from teams as T2 where T1.team_id = T2.team_id and status <> '待機'
+  )
+;
+
+select team_id from teams where status <> '待機' group by team_id; 
 
 
 /* １．Case式のススメ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝*/
